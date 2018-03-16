@@ -1,0 +1,136 @@
+<project name="jarsBuilder" default="all">
+    <property name="src.dir" value="src"/>
+    <property name="bin.dir" value="jar-classes"/>
+    <property name="jars.dir" value="jars"/>
+
+    <property name="args4j.path" value="lib/args4j-2.0.21.jar"/>
+    <property name="commons.lang3.path" value="lib/commons-lang3-3.1.jar"/>
+    <property name="antlr.path" value="lib/antlr-runtime-4.6.jar"/>
+    
+    <property name="efsmtools.generator.main" value="basic_block_generator/main/EFSMToolsGenerator"/>
+    <property name="efsmtools.generator.jar" value="efsmtools-generator.jar"/>
+
+    <property name="unbeast.generator.main" value="basic_block_generator/main/UnbeastGenerator"/>
+    <property name="unbeast.generator.jar" value="unbeast-generator.jar"/>
+
+    <property name="g4ltl.st.generator.main" value="basic_block_generator/main/G4LTLSTGenerator"/>
+    <property name="g4ltl.st.generator.jar" value="g4ltl-st-generator.jar"/>
+    
+    <property name="bosy.generator.main" value="basic_block_generator/main/BoSyGenerator"/>
+    <property name="bosy.generator.jar" value="bosy-generator.jar"/>
+    
+    <property name="nusmv.trace.recorder.main" value="basic_block_generator/main/NuSMVTraceRecorder"/>
+    <property name="nusmv.trace.recorder.jar" value="nusmv-trace-recorder.jar"/>
+    
+    <property name="debug" value="true"/>
+    
+    <target name="all"
+            depends="efsmtools-generator-jar, unbeast-generator-jar, moore-generator-jar,
+                     g4ltl-st-generator-jar, nusmv-trace-recorder-jar, bosy-generator-jar">
+    </target>
+
+    <target name="efsmtools-generator-jar">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               classpath="${commons.lang3.path}:${args4j.path}:${antlr.path}"
+               includeantruntime="false"
+               debug="${debug}">
+            <include name="${efsmtools.generator.main}.java"/>
+        </javac>
+        <jar destfile="${jars.dir}/${efsmtools.generator.jar}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${efsmtools.generator.main}"/>
+            </manifest>
+            <zipfileset src="${commons.lang3.path}" excludes="META-INF/*.SF"/>
+            <zipfileset src="${args4j.path}" excludes="meta-inf/*.sf"/>
+            <zipfileset src="${antlr.path}" excludes="meta-inf/*.sf"/>
+        </jar>
+        <delete dir="${bin.dir}"/>
+    </target>
+    
+    <target name="unbeast-generator-jar">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               classpath="${commons.lang3.path}:${args4j.path}:${antlr.path}"
+               includeantruntime="false"
+               debug="${debug}">
+            <include name="${unbeast.generator.main}.java"/>
+        </javac>
+        <jar destfile="${jars.dir}/${unbeast.generator.jar}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${unbeast.generator.main}"/>
+            </manifest>
+            <zipfileset src="${commons.lang3.path}" excludes="META-INF/*.SF"/>
+            <zipfileset src="${args4j.path}" excludes="meta-inf/*.sf"/>
+            <zipfileset src="${antlr.path}" excludes="meta-inf/*.sf"/>
+        </jar>
+        <delete dir="${bin.dir}"/>
+    </target>
+    
+    <target name="g4ltl-st-generator-jar">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               classpath="${commons.lang3.path}:${args4j.path}:${antlr.path}"
+               includeantruntime="false"
+               debug="${debug}">
+            <include name="${g4ltl.st.generator.main}.java"/>
+        </javac>
+        <jar destfile="${jars.dir}/${g4ltl.st.generator.jar}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${g4ltl.st.generator.main}"/>
+            </manifest>
+            <zipfileset src="${commons.lang3.path}" excludes="META-INF/*.SF"/>
+            <zipfileset src="${args4j.path}" excludes="meta-inf/*.sf"/>
+            <zipfileset src="${antlr.path}" excludes="meta-inf/*.sf"/>
+        </jar>
+        <delete dir="${bin.dir}"/>
+    </target>
+    
+    <target name="bosy-generator-jar">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               classpath="${commons.lang3.path}:${args4j.path}:${antlr.path}"
+               includeantruntime="false"
+               debug="${debug}">
+            <include name="${bosy.generator.main}.java"/>
+        </javac>
+        <jar destfile="${jars.dir}/${bosy.generator.jar}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${bosy.generator.main}"/>
+            </manifest>
+            <zipfileset src="${commons.lang3.path}" excludes="META-INF/*.SF"/>
+            <zipfileset src="${args4j.path}" excludes="meta-inf/*.sf"/>
+            <zipfileset src="${antlr.path}" excludes="meta-inf/*.sf"/>
+        </jar>
+        <delete dir="${bin.dir}"/>
+    </target>
+    
+    <target name="nusmv-trace-recorder-jar">
+        <mkdir dir="${bin.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               classpath="${commons.lang3.path}:${args4j.path}:${antlr.path}"
+               includeantruntime="false"
+               debug="${debug}">
+            <include name="${nusmv.trace.recorder.main}.java"/>
+        </javac>
+        <jar destfile="${jars.dir}/${nusmv.trace.recorder.jar}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${nusmv.trace.recorder.main}"/>
+            </manifest>
+            <zipfileset src="${commons.lang3.path}" excludes="META-INF/*.SF"/>
+            <zipfileset src="${args4j.path}" excludes="meta-inf/*.sf"/>
+            <zipfileset src="${antlr.path}" excludes="meta-inf/*.sf"/>
+        </jar>
+        <delete dir="${bin.dir}"/>
+    </target>
+</project>
