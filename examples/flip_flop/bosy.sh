@@ -4,7 +4,7 @@ d=$(pwd)/
 cd ../..
 inst=flip_flop.txt
 inst="$d$inst"
-timeout 5m java -jar jars/bosy-generator.jar "$inst" --path "$(cat ../../dependencies/bosy-path.txt)" 2>&1 > log.txt
+timeout 5m java -jar jars/bosy-generator.jar "$inst" --path "$(cat dependencies/bosy-path.txt)" 2>&1 > log.txt
 RETVAL=$?
 if [[ $RETVAL == 0 ]]; then
     cp result.smv ${inst}.bosy.smv

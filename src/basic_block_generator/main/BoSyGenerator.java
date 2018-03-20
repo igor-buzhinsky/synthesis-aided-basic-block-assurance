@@ -63,7 +63,7 @@ public class BoSyGenerator extends MainBase {
         final StringBuilder result = new StringBuilder();
         boolean readingResult = false;
 
-        final ProcessBuilder pb = new ProcessBuilder("BoSy", "--synthesize",
+        final ProcessBuilder pb = new ProcessBuilder("./BoSy", "--synthesize",
                 "--qbf-certifier", "quabs", "--target", "smv", "--strategy", linear ? "linear" : "exponential",
                 currentPath + "/" + INSTANCE_FILENAME);
         pb.directory(new File(path));
