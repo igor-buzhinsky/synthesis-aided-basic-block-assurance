@@ -5,9 +5,8 @@ import basic_block_generator.generated.ltlLexer;
 import basic_block_generator.generated.ltlParser;
 import basic_block_generator.variable.ValueCombination;
 import basic_block_generator.variable.Variable;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.ByteArrayInputStream;
@@ -55,7 +54,7 @@ public class ProblemInstance {
         this.spinSpecs = new ArrayList<>();
         for (String spec : synthesisSpecs) {
             try (InputStream in = new ByteArrayInputStream(spec.getBytes(StandardCharsets.UTF_8))) {
-                final ltlLexer lexer = new ltlLexer(new ANTLRInputStream(in));
+                final ltlLexer lexer = new ltlLexer(CharStreams.fromStream(in, StandardCharsets.UTF_8));
                 final CommonTokenStream tokens = new CommonTokenStream(lexer);
                 final ltlParser parser = new ltlParser(tokens);
                 final LTLFormula f = parser.formula().f;

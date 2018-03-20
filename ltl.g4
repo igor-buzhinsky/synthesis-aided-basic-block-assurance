@@ -5,8 +5,6 @@ options {
 }
 
 @header {
-package basic_block_generator.generated;
-
 import java.util.*;
 import basic_block_generator.formula.*;
 }

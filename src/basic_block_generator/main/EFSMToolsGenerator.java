@@ -11,10 +11,7 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +26,9 @@ public class EFSMToolsGenerator extends MainBase {
 
     @Argument(usage = "input specification file", metaVar = "<file>", required = true)
     private String input;
+
+    @Option(name = "--path", usage = "EFSM-Tools jars directory path", metaVar = "<dir>", required = true)
+    private String path;
 
     @Option(name = "--states", aliases = {"-s"}, usage = "number of states", metaVar = "<k>", required = true)
     private int states;
@@ -60,13 +60,14 @@ public class EFSMToolsGenerator extends MainBase {
         }
 
         final String command = p.getRight()
-                .replace("<JAR>", "../../EFSM-tools/jars/fast-automaton-generator.jar")
+                .replace("<JAR>", "fast-automaton-generator.jar")
                 .replace("<TRACE_FILENAME>", SC_FILENAME)
                 .replace("<LTL>", enableLTL ? ("--ltl " + LTL_FILENAME) : "")
                 .replace("<SIZE>", String.valueOf(states))
                 .replace("<RESULT>", RESULT_FILENAME);
         System.out.println(command);
         final ProcessBuilder pb = new ProcessBuilder(command.split(" +"));
+        pb.directory(new File(path));
         pb.redirectErrorStream(true);
         final Process process = pb.start();
         boolean found = false;

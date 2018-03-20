@@ -1,8 +1,6 @@
 // Generated from C:/Users/Lenovo/repos/synthesis-aided-basic-block-assurance\ltl.g4 by ANTLR 4.7
 package basic_block_generator.generated;
 
-package basic_block_generator.generated;
-
 import java.util.*;
 import basic_block_generator.formula.*;
 

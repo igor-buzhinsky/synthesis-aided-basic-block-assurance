@@ -27,7 +27,7 @@ public class BoSyGenerator extends MainBase {
     @Argument(usage = "input specification file", metaVar = "<file>", required = true)
     private String input;
 
-    @Option(name = "--path", usage = "BoSy path", metaVar = "<file>", required = true)
+    @Option(name = "--path", usage = "BoSy directory path", metaVar = "<dir>", required = true)
     private String path;
 
     @Option(name = "--linear", handler = BooleanOptionHandler.class,
@@ -63,7 +63,7 @@ public class BoSyGenerator extends MainBase {
         final StringBuilder result = new StringBuilder();
         boolean readingResult = false;
 
-        final ProcessBuilder pb = new ProcessBuilder(".build/release/BoSy", "--synthesize",
+        final ProcessBuilder pb = new ProcessBuilder("BoSy", "--synthesize",
                 "--qbf-certifier", "quabs", "--target", "smv", "--strategy", linear ? "linear" : "exponential",
                 currentPath + "/" + INSTANCE_FILENAME);
         pb.directory(new File(path));
