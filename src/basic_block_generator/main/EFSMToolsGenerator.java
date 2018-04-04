@@ -60,14 +60,13 @@ public class EFSMToolsGenerator extends MainBase {
         }
 
         final String command = p.getRight()
-                .replace("<JAR>", "fast-automaton-generator.jar")
+                .replace("<JAR>", path + "fast-automaton-generator.jar")
                 .replace("<TRACE_FILENAME>", SC_FILENAME)
                 .replace("<LTL>", enableLTL ? ("--ltl " + LTL_FILENAME) : "")
                 .replace("<SIZE>", String.valueOf(states))
                 .replace("<RESULT>", RESULT_FILENAME);
         System.out.println(command);
         final ProcessBuilder pb = new ProcessBuilder(command.split(" +"));
-        pb.directory(new File(path));
         pb.redirectErrorStream(true);
         final Process process = pb.start();
         boolean found = false;

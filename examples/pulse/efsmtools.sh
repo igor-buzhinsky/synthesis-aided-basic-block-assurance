@@ -15,6 +15,7 @@ for values in 4; do
         inst=instance_${values}_${trace_complexity}.txt
         echo "*** $inst"
         inst="$d$inst"
+        touch sc.sc
         timeout 5m java -jar jars/efsmtools-generator.jar $inst -s $states --path "$(cat dependencies/efsmtools-path.txt)" #2>&1 > log.txt
         RETVAL=$?
         if [[ $RETVAL == 0 ]]; then
