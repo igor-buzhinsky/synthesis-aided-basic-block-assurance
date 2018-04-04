@@ -1,8 +1,8 @@
 package basic_block_generator.main;
 
 import basic_block_generator.MainBase;
-import basic_block_generator.ProblemInstance;
 import basic_block_generator.MealyMachine;
+import basic_block_generator.ProblemInstance;
 import basic_block_generator.Util;
 import basic_block_generator.formula.LTLFormula;
 import basic_block_generator.variable.ValueCombination;
@@ -11,7 +11,6 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -59,8 +58,8 @@ public class UnbeastGenerator extends MainBase {
         final long unbeastStartTime = System.currentTimeMillis();
 
         final Process process = Runtime.getRuntime().exec(
-                new String[] { "./unbeast", "../" + OUTPUT_PATH, "--runSimulator" },
-                new String[0], new File(path));
+                new String[] { path + "unbeast", OUTPUT_PATH, "--runSimulator" },
+                new String[0]);
         try (
                 final Scanner inputScanner = new Scanner(process.getInputStream());
                 final PrintWriter writer = new PrintWriter(process.getOutputStream(), true);
