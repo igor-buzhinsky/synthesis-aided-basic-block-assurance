@@ -1,1 +1,1 @@
-../bosy/.build/release/
+../bosy/
