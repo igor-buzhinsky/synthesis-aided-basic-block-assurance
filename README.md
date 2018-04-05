@@ -36,7 +36,7 @@ Examples of use are located in [examples](/examples). Run shell scripts from the
 
 ## Bugs
 
-TODO describe: bug with variable ranges in specification files.
+Encoding of integer variables may work incorrectly. This was noticed to happen sometimes when the bounds of integer variables are not of the form 0..(2^k - 1), e.g. -1..1 or 0..2. Possibly, the bug does not happen in a more general situation: when the *total* number of possible values is the power of 2. So, if the total number of possible values of some integer variable is not a power of 2 and you notice something strange, consider extending the range in INPUT and OUTPUT declarations (e.g. from 0..5 to 0..7) to get rid of the error. Unfortunately, you will also need to modify the specification to treat such cases as dummy ones. 
 
 ## Troubleshooting, bugs, questions, research collaboration, etc.
 
