@@ -2,7 +2,9 @@
 
 This toolset implements a wrapper for several model synthesis tools. It is used in the following paper:
 
-* Igor Buzhinsky, Antti Pakonen, Valeriy Vyatkin. Synthesis-aided reliability assurance of basic block models for model checking purposes. Accepted to 27th International Symposium on Industrial Electronics (ISIE 2018)
+* [Igor Buzhinsky, Antti Pakonen, Valeriy Vyatkin. Synthesis-aided reliability assurance of basic block models for model checking purposes. 27th IEEE International Symposium on Industrial Electronics (ISIE). June 13–15, 2018, Cairns, Australia, pp. 669–674. IEEE, 2018](http://rain.ifmo.ru/~buzhinsky/papers/isie-2018.pdf)
+
+In addition, it contains a [tool](/jars/nusmv-trace-recorder.jar) to record traces based on NuSMV models. 
 
 ## Prerequisites
 

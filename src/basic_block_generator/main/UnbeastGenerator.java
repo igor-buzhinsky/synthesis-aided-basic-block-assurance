@@ -206,7 +206,7 @@ public class UnbeastGenerator extends MainBase {
             );
         }
 
-        MealyMachine reconstructAutomaton() throws IOException {
+        MealyMachine reconstructAutomaton() {
             final List<String> firstStateData = step(0);
             final Map<String, GameState> states = new LinkedHashMap<>();
             final Deque<GameState> unprocessedStates = new LinkedList<>();

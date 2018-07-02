@@ -7,10 +7,12 @@ import basic_block_generator.variable.ValueCombination;
 import basic_block_generator.variable.Variable;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
+import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * Created by buzhinsky on 4/20/17.
@@ -28,39 +30,62 @@ public class NuSMVTraceRecorder extends MainBase {
     @Option(name = "--traceLen", usage = "trace length (default 10)", metaVar = "<tl>")
     private int traceLen = 10;
 
+    @Option(name = "--verbose", handler = BooleanOptionHandler.class, usage = "print some info")
+    private boolean verbose;
+
+    @Option(name = "--flags", usage = "NuSMV flags after -int", metaVar = "<flags>")
+    private String flags = "";
+
     public static void main(String[] args) {
         new NuSMVTraceRecorder().run(args);
+    }
+
+    private void log(Object s) {
+        if (verbose) {
+            System.out.println(s);
+        }
     }
 
     @Override
     public void launcher() throws IOException, InterruptedException {
         final ProblemInstance instance = ProblemInstance.load(input);
-        final ProcessBuilder pb = new ProcessBuilder(("NuSMV -int " + model).split(" "));
+        final String nuSMVString = "NuSMV -int " + flags + " " + model;
+        log(nuSMVString);
+        final ProcessBuilder pb = new ProcessBuilder(nuSMVString.split(" +"));
         pb.redirectErrorStream(true);
         final Process process = pb.start();
+        log("INFO: started NuSMV");
+        log(instance);
         try (
                 final Scanner inputScanner = new Scanner(process.getInputStream());
                 final PrintWriter writer = new PrintWriter(process.getOutputStream(), true);
         ) {
             writer.println("go");
             for (int i = 0; i < traceNum; i++) {
+                log("INFO: starting simulation " + i);
                 randomSimulation(instance, inputScanner, writer);
+                log("INFO: finished simulation " + i);
             }
             writer.println("quit");
         }
         process.waitFor();
     }
 
-    private void randomSimulation(ProblemInstance instance, Scanner inputScanner, PrintWriter writer)
-            throws IOException, InterruptedException {
+    private void randomSimulation(ProblemInstance instance, Scanner inputScanner, PrintWriter writer) {
         boolean reading = false;
         //final int valuesToRead = instance.inputVariables().size() + instance.outputVariables().size();
         final List<ValueCombination> inputs = new ArrayList<>();
         final List<ValueCombination> outputs = new ArrayList<>();
         final Map<String, Integer> values = new TreeMap<>();
-        writer.println("pick_state -r");
-        writer.println("simulate -r " + (traceLen - 1));
-        writer.println("show_traces -v; echo");
+
+        final Consumer<String> write = s -> {
+            writer.println(s);
+            log(s);
+        };
+
+        write.accept("pick_state -r");
+        write.accept("simulate -r " + (traceLen - 1));
+        write.accept("show_traces -v; echo");
         while (inputs.size() < traceLen) {
             final String line = inputScanner.nextLine().trim();
             if (line.contains("=") && line.contains(".")

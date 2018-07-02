@@ -111,11 +111,11 @@ public class EFSMToolsGenerator extends MainBase {
         while (m.find()) {
             final int num = Integer.parseInt(m.group(1));
             final String decoded = ValueCombination.denseDecode(inputVariables, num).toNuSMVString();
-            sb.append(input.substring(lastPos, m.start()));
+            sb.append(input, lastPos, m.start());
             sb.append("[").append(decoded).append("]/");
             lastPos = m.end();
         }
-        sb.append(input.substring(lastPos, input.length()));
+        sb.append(input, lastPos, input.length());
         return sb.toString();
     }
 }
