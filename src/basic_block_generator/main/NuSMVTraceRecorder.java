@@ -118,7 +118,13 @@ public class NuSMVTraceRecorder extends MainBase {
                     outputs.add(new ValueCombination(outputValues, instance.outputVariables()));
                     values.clear();
                 } else {
-                    values.put(tokens[0], ValueCombination.parseValue(tokens[1]));
+                    Integer value = null;
+                    try {
+                        value = ValueCombination.parseValue(tokens[1]);
+                    } catch (NumberFormatException ignored) {
+                        // enums are not supported
+                    }
+                    values.put(tokens[0], value);
                 }
             }
         }
