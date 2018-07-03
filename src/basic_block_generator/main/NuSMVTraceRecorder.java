@@ -148,7 +148,7 @@ public class NuSMVTraceRecorder extends MainBase {
             final String s = trace.toAprosString();
             try (PrintWriter out = new PrintWriter((aprosDir + "/trace_" + traceIndex + ".txt")
                     .replace("//", "/"))) {
-                out.println(s);
+                out.print(s);
                 System.out.print("+");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
