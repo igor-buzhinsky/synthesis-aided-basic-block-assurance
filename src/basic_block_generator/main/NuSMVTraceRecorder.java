@@ -9,6 +9,8 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.spi.BooleanOptionHandler;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -36,6 +38,11 @@ public class NuSMVTraceRecorder extends MainBase {
     @Option(name = "--flags", usage = "NuSMV flags after -int", metaVar = "<flags>")
     private String flags = "";
 
+    @Option(name = "--aprosDir", usage = "output traces in the Apros format "
+        + "(compatible with EFSM-tools plant model construction) into the specified directory",
+            metaVar = "<dir>")
+    private String aprosDir = null;
+
     public static void main(String[] args) {
         new NuSMVTraceRecorder().run(args);
     }
@@ -48,6 +55,9 @@ public class NuSMVTraceRecorder extends MainBase {
 
     @Override
     public void launcher() throws IOException, InterruptedException {
+        if (aprosDir != null) {
+            new File(aprosDir).mkdirs();
+        }
         final ProblemInstance instance = ProblemInstance.load(input);
         final String nuSMVString = "NuSMV -int " + flags + " " + model;
         log(nuSMVString);
@@ -63,7 +73,7 @@ public class NuSMVTraceRecorder extends MainBase {
             writer.println("go");
             for (int i = 0; i < traceNum; i++) {
                 log("INFO: starting simulation " + i);
-                randomSimulation(instance, inputScanner, writer);
+                randomSimulation(instance, inputScanner, writer, i);
                 log("INFO: finished simulation " + i);
             }
             writer.println("quit");
@@ -71,7 +81,7 @@ public class NuSMVTraceRecorder extends MainBase {
         process.waitFor();
     }
 
-    private void randomSimulation(ProblemInstance instance, Scanner inputScanner, PrintWriter writer) {
+    private void randomSimulation(ProblemInstance instance, Scanner inputScanner, PrintWriter writer, int traceIndex) {
         boolean reading = false;
         //final int valuesToRead = instance.inputVariables().size() + instance.outputVariables().size();
         final List<ValueCombination> inputs = new ArrayList<>();
@@ -122,13 +132,22 @@ public class NuSMVTraceRecorder extends MainBase {
                     try {
                         value = ValueCombination.parseValue(tokens[1]);
                     } catch (NumberFormatException ignored) {
-                        // enums are not supported
+                        // enums are not supported, but at least are tolerated
                     }
                     values.put(tokens[0], value);
                 }
             }
         }
         final Trace trace = new Trace(inputs, outputs);
-        System.out.println(trace.toString());
+        if (aprosDir == null) {
+            System.out.println(trace.toString());
+        } else {
+            final String s = trace.toAprosString();
+            try (PrintWriter out = new PrintWriter(aprosDir + "/trace_" + traceIndex + ".txt")) {
+                out.println(s);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
