@@ -79,6 +79,9 @@ public class NuSMVTraceRecorder extends MainBase {
             writer.println("quit");
         }
         process.waitFor();
+        if (aprosDir != null) {
+            System.out.println();
+        }
     }
 
     private void randomSimulation(ProblemInstance instance, Scanner inputScanner, PrintWriter writer, int traceIndex) {
@@ -143,8 +146,10 @@ public class NuSMVTraceRecorder extends MainBase {
             System.out.println(trace.toString());
         } else {
             final String s = trace.toAprosString();
-            try (PrintWriter out = new PrintWriter(aprosDir + "/trace_" + traceIndex + ".txt")) {
+            try (PrintWriter out = new PrintWriter((aprosDir + "/trace_" + traceIndex + ".txt")
+                    .replace("//", "/"))) {
                 out.println(s);
+                System.out.print("+");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
