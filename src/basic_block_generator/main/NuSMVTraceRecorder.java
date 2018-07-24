@@ -39,9 +39,11 @@ public class NuSMVTraceRecorder extends MainBase {
     private String flags = "";
 
     @Option(name = "--aprosDir", usage = "output traces in the Apros format "
-        + "(compatible with EFSM-tools plant model construction) into the specified directory",
+            + "(compatible with EFSM-tools plant model construction) into the specified directory",
             metaVar = "<dir>")
     private String aprosDir = null;
+
+    private static final int MEMORY_LIMIT = 100;
 
     public static void main(String[] args) {
         new NuSMVTraceRecorder().run(args);
@@ -72,6 +74,12 @@ public class NuSMVTraceRecorder extends MainBase {
         ) {
             writer.println("go");
             for (int i = 0; i < traceNum; i++) {
+                if (i % MEMORY_LIMIT == 0 && i > 0) {
+                    // reset NuSMV to get rid of trace memory
+                    writer.println("reset");
+                    writer.println("read_model -i " + model);
+                    writer.println("go");
+                }
                 log("INFO: starting simulation " + i);
                 randomSimulation(instance, inputScanner, writer, i);
                 log("INFO: finished simulation " + i);
@@ -150,6 +158,9 @@ public class NuSMVTraceRecorder extends MainBase {
                     .replace("//", "/"))) {
                 out.print(s);
                 System.out.print("+");
+                if (traceIndex % 100 == 99) {
+                    System.out.println();
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
